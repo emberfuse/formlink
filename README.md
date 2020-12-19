@@ -1,2 +1,11 @@
-# preflight-js
-JavaScript form data handlers and helpful utilities.
+# Preflight JS
+
+Convenient JavaScript library that helps with sending form data through HTTP requests by serializing Objects to FormData instances.
+
+## Install
+
+```sh
+npm install object-to-formdata
+```
+
+## Usage
