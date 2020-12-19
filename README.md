@@ -78,7 +78,7 @@ HTML template part of the Vue JS script shown above.
                 <input type="email" v-model="form.email">
             </label>
 
-            <div v-show="form.error('email')">
+            <div v-show="form.hasError('email')">
                 <span>{{ form.error('email') }}</span>
             </div>
         </div>
@@ -89,7 +89,7 @@ HTML template part of the Vue JS script shown above.
                 <input type="password" v-model="form.password">
             </label>
 
-            <div v-show="form.error('password')">
+            <div v-show="form.hasError('password')">
                 <span>{{ form.error('password') }}</span>
             </div>
         </div>
