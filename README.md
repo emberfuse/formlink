@@ -5,7 +5,7 @@ Convenient JavaScript library that helps with sending form data through HTTP req
 ## Install
 
 ```sh
-npm install object-to-formdata
+npm install preflight-js
 ```
 
 ## Usage
