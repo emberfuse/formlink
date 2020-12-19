@@ -66,3 +66,37 @@ export default {
     }
 }
 ```
+
+HTML template part of the Vue JS script shown above.
+
+```html
+<template>
+    <form @submit.prevent="login">
+        <div>
+            <label>
+                <span>Email address</span>
+                <input type="email" v-model="form.email">
+            </label>
+
+            <div v-show="form.error('email')">
+                <span>{{ form.error('email') }}</span>
+            </div>
+        </div>
+
+        <div>
+            <label>
+                <span>Password</span>
+                <input type="password" v-model="form.password">
+            </label>
+
+            <div v-show="form.error('password')">
+                <span>{{ form.error('password') }}</span>
+            </div>
+        </div>
+
+        <div>
+            <button type="submit">Login</button>
+        </div>
+    </form>
+</template>
+```
