@@ -4,8 +4,18 @@ Convenient JavaScript library that helps with sending form data through HTTP req
 
 ## Install
 
+You can install Preflight JS using Node JS package manager.
+
 ```sh
 npm install preflight-js
+```
+
+Or add it directly to your `package.json` file:
+
+```json
+"dependencies": {
+  "preflight-js": "1.3.1"
+}
 ```
 
 ## Usage
