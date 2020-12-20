@@ -39,11 +39,12 @@ class Form {
      * Create static instance of form object.
      *
      * @param   {Object}  data
+     * @param   {Object}  options
      *
      * @return  {Form}
      */
-    static create(data = {}) {
-        return new Form(data);
+    static create(data = {}, options = {}) {
+        return new Form(data, options);
     }
 
     /**
@@ -377,12 +378,4 @@ class Form {
     }
 }
 
-export default {
-    install(app) {
-        app.prototype.$form = (data = {}, options = {}) => {
-            return Form.create()
-                .withData(data)
-                .withOptions(options);
-        };
-    },
-};
+export default Form;
