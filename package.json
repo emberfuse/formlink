@@ -1,5 +1,5 @@
 {
-    "name": "preflight-js",
+    "name": "@thavarshan/preflight-js",
     "version": "1.4.7",
     "description": "Convenient JavaScript library that helps with sending form data by serializing Objects to FormData instances through HTTP requests.",
     "main": "dist/index.js",

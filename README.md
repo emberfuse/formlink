@@ -9,7 +9,7 @@ Installing this package will allow you to create a new form object that will pro
 You can install Preflight JS using Node JS package manager.
 
 ```bash
-npm install preflight-js
+npm i @thavarshan/preflight-js
 ```
 
 Or add it directly to your `package.json` file:
@@ -27,7 +27,7 @@ Preflight uses **axios** to make requests to the backend server. A form may be s
 ```javascript
 const form = new Form({
     name: null,
-    email: null
+    email: null,
 });
 
 form.post('/user/profile');
@@ -90,7 +90,7 @@ HTML template part of the Vue JS script shown above.
         <div>
             <label>
                 <span>Email address</span>
-                <input type="email" v-model="form.email">
+                <input type="email" v-model="form.email" />
             </label>
 
             <div v-show="form.hasError('email')">
@@ -101,7 +101,7 @@ HTML template part of the Vue JS script shown above.
         <div>
             <label>
                 <span>Password</span>
-                <input type="password" v-model="form.password">
+                <input type="password" v-model="form.password" />
             </label>
 
             <div v-show="form.hasError('password')">
@@ -125,14 +125,17 @@ import Form from 'preflight-js';
 
 export default {
     data() {
-        form: new Form({
-            '_method': 'PUT',
-            name: null,
-            email: null,
-            photo: null
-        }, {
-            resetOnSuccess: false,
-        })
+        form: new Form(
+            {
+                _method: 'PUT',
+                name: null,
+                email: null,
+                photo: null,
+            },
+            {
+                resetOnSuccess: false,
+            }
+        );
     },
     methods: {
         async updateProfile() {
@@ -141,9 +144,9 @@ export default {
             }
 
             await this.form.post(route('profile.update'));
-        }
-    }
-}
+        },
+    },
+};
 ```
 
 ### API & Available Methods
@@ -205,7 +208,7 @@ patch(url, headers);
  *
  * @return  {Promise}
  */
-delete(url, headers);
+delete (url, headers);
 
 /**
  * Determine if the inputs bound to form have any related error messages.
