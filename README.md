@@ -116,7 +116,7 @@ HTML template part of the Vue JS script shown above.
 </template>
 ```
 
-#### Uploading files via POST, PUT or PATCH request
+### Uploading files via POST, PUT or PATCH request
 
 To upload files via form object please specify which method is to be used via form object data and use POST request to make the actual request. An example is shown below.
 
@@ -257,7 +257,7 @@ const form = new Form(data, options);
 
 `setInitialOnSuccess`: (Boolean) reset all errors and currently bound form data to null. Currently set data will be saved to `initials` object.
 
-*Custom options can be set via argument.*
+**Custom options can be set via argument.**
 
 ```javascript
 const options = {

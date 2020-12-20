@@ -1,13 +1,7 @@
 import axios from 'axios';
 import Errors from './Errors';
 import { serialize as objectToFormData } from 'object-to-formdata';
-import {
-    guardAgainstReservedFieldName,
-    isArray,
-    isFile,
-    merge,
-    reservedFieldNames
-} from './helpers';
+import { guardAgainstReservedFieldName, isArray, isFile, merge, reservedFieldNames } from './util';
 
 class Form {
     /**
@@ -32,12 +26,12 @@ class Form {
             set(obj, prop, value) {
                 obj[prop] = value;
 
-                if ((reservedFieldNames.indexOf(prop) === -1) && value !== obj.initial[prop]) {
+                if (reservedFieldNames.indexOf(prop) === -1 && value !== obj.initial[prop]) {
                     obj.isDirty = true;
                 }
 
                 return true;
-            }
+            },
         });
     }
 
@@ -213,14 +207,20 @@ class Form {
 
     __makeRequest(url, requestType, headers) {
         if (requestType === 'delete') {
-            return axios[requestType](url, { data: this.data() }, {
-                headers: headers
-            });
+            return axios[requestType](
+                url,
+                { data: this.data() },
+                {
+                    headers: headers,
+                }
+            );
         }
 
         return axios[requestType](
-            url, this.hasFiles() ? objectToFormData(this.data()) : this.data(), {
-                headers: headers
+            url,
+            this.hasFiles() ? objectToFormData(this.data()) : this.data(),
+            {
+                headers: headers,
             }
         );
     }
@@ -283,11 +283,11 @@ class Form {
     onSuccess(response) {
         this.processing = false;
 
-        if (! this.hasErrors()) {
+        if (!this.hasErrors()) {
             this.successful = true;
             this.recentlySuccessful = true;
 
-            setTimeout(() => this.recentlySuccessful = false, 2000);
+            setTimeout(() => (this.recentlySuccessful = false), 2000);
         }
 
         if (this.__options.resetOnSuccess) {
@@ -359,7 +359,8 @@ class Form {
 
         if (requestTypes.indexOf(requestType) === -1) {
             throw new Error(
-                `\`${requestType}\` is not a valid request type, ` + `must be one of: \`${requestTypes.join('`, `')}\`.`
+                `\`${requestType}\` is not a valid request type, ` +
+                    `must be one of: \`${requestTypes.join('`, `')}\`.`
             );
         }
     }
