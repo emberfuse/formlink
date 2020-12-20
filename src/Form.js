@@ -10,6 +10,14 @@ import {
 } from './helpers';
 
 class Form {
+    /**
+     * Create new instanc of form object.
+     *
+     * @param   {Object}  data
+     * @param   {Object}  options
+     *
+     * @return  {Proxy}
+     */
     constructor(data = {}, options = {}) {
         this.processing = false;
         this.successful = false;
@@ -33,10 +41,17 @@ class Form {
         });
     }
 
+    /**
+     * Assign data to current instance of form object.
+     *
+     * @param   {Object}  data
+     *
+     * @return  {Form}
+     */
     withData(data) {
         if (isArray(data)) {
             data = data.reduce((carry, element) => {
-                carry[element];
+                carry[element] = '';
 
                 return carry;
             }, {});
@@ -58,12 +73,26 @@ class Form {
         return this;
     }
 
+    /**
+     * Set initial/original values of form data.
+     *
+     * @param   {Object}  values
+     *
+     * @return  {void}
+     */
     setInitialValues(values) {
         this.initial = {};
 
         merge(this.initial, values);
     }
 
+    /**
+     * Assign options to be used by current instance of form object.
+     *
+     * @param   {Object}  options
+     *
+     * @return  {Form}
+     */
     withOptions(options) {
         this.__options = {
             resetOnSuccess: true,
@@ -81,6 +110,11 @@ class Form {
         return this;
     }
 
+    /**
+     * Get all data as object assgined to form object.
+     *
+     * @return  {Object}
+     */
     data() {
         const data = {};
 
@@ -91,29 +125,78 @@ class Form {
         return data;
     }
 
+    /**
+     * Save current data to initials object and empty current data registry.
+     *
+     * @return  {void}
+     */
     reset() {
         merge(this, this.initial);
+
+        this.errors.clearAll();
+
+        for (let key in this.data) this.data[key] = null;
 
         this.isDirty = false;
     }
 
-    post(url, options = {}) {
-        return this.submit('post', url, options);
+    /**
+     * Make POST request with currently attached data object to given endpoint.
+     *
+     * @param   {String}  url
+     * @param   {Object}  headers
+     *
+     * @return  {Promise}
+     */
+    post(url, headers = {}) {
+        return this.__submit('post', url, headers);
     }
 
-    put(url, options = {}) {
-        return this.submit('put', url, options);
+    /**
+     * Make PUT request with currently attached data object to given endpoint.
+     *
+     * @param   {String}  url
+     * @param   {Object}  headers
+     *
+     * @return  {Promise}
+     */
+    put(url, headers = {}) {
+        return this.__submit('put', url, headers);
     }
 
-    patch(url, options = {}) {
-        return this.submit('patch', url, options);
+    /**
+     * Make PATCH request with currently attached data object to given endpoint.
+     *
+     * @param   {String}  url
+     * @param   {Object}  headers
+     *
+     * @return  {Promise}
+     */
+    patch(url, headers = {}) {
+        return this.__submit('patch', url, headers);
     }
 
-    delete(url, options) {
-        return this.submit('delete', url, options);
+    /**
+     * Make DELETE request with currently attached data object to given endpoint.
+     *
+     * @param   {String}  url
+     * @param   {Object}  headers
+     *
+     * @return  {Promise}
+     */
+    delete(url, headers) {
+        return this.__submit('delete', url, headers);
     }
 
-    submit(requestType, url, options) {
+    /**
+     * Make given request type with currently attached data object to given endpoint.
+     *
+     * @param   {String}  url
+     * @param   {Object}  headers
+     *
+     * @return  {Promise}
+     */
+    __submit(requestType, url, headers = {}) {
         this.__validateRequestType(requestType);
 
         this.processing = true;
@@ -123,21 +206,30 @@ class Form {
             this.errors.clearAll();
         }
 
-        return this.__makeRequest(url, requestType)
+        return this.__makeRequest(url, requestType, headers)
             .catch(this.onFail.bind(this))
             .then(this.onSuccess.bind(this));
     }
 
-    __makeRequest(url, requestType) {
+    __makeRequest(url, requestType, headers) {
         if (requestType === 'delete') {
-            return axios[requestType](url, { data: this.data() });
+            return axios[requestType](url, { data: this.data() }, {
+                headers: headers
+            });
         }
 
         return axios[requestType](
-            url, this.hasFiles() ? objectToFormData(this.data()) : this.data()
+            url, this.hasFiles() ? objectToFormData(this.data()) : this.data(), {
+                headers: headers
+            }
         );
     }
 
+    /**
+     * Determine if the data attached contains file data.
+     *
+     * @return  {Boolean}
+     */
     hasFiles() {
         for (const property in this.initial) {
             if (this.hasFilesDeep(this[property])) {
@@ -146,8 +238,15 @@ class Form {
         }
 
         return false;
-    };
+    }
 
+    /**
+     * Determine if file data are available embedded into the data object.
+     *
+     * @param   {Object}  object
+     *
+     * @return  {Boolean}
+     */
     hasFilesDeep(object) {
         if (object === null) {
             return false;
@@ -174,6 +273,13 @@ class Form {
         return isFile(object);
     }
 
+    /**
+     * Actions to be performed on successful request response.
+     *
+     * @param   {Object}  response
+     *
+     * @return  {Object}
+     */
     onSuccess(response) {
         this.processing = false;
 
@@ -195,6 +301,13 @@ class Form {
         return response;
     }
 
+    /**
+     * Actions to be performed on failed request attempt.
+     *
+     * @param   {Object}  error
+     *
+     * @return  {void}
+     */
     onFail(error) {
         this.errors.record(error.response.data.errors);
 
@@ -203,18 +316,44 @@ class Form {
         this.recentlySuccessful = false;
     }
 
+    /**
+     * Determine if the inputs bound to form have any related error messages.
+     *
+     * @return  {Boolean}
+     */
     hasErrors() {
         return this.errors.any();
     }
 
+    /**
+     * Determine f the given form filed bound to the form object has an error message.
+     *
+     * @param   {String}  field
+     *
+     * @return  {Boolean}
+     */
     hasError(field) {
         return this.hasErrors() && this.errors.has(field);
     }
 
+    /**
+     * Get error message associated with the given form input.
+     *
+     * @param   {String}  field
+     *
+     * @return  {String}
+     */
     error(field) {
         return this.errors.get(field);
     }
 
+    /**
+     * Determine if the given request type is supported.
+     *
+     * @param   {String}  requestType
+     *
+     * @return  {void}
+     */
     __validateRequestType(requestType) {
         const requestTypes = ['get', 'post', 'put', 'patch', 'delete'];
 
