@@ -36,6 +36,17 @@ class Form {
     }
 
     /**
+     * Create static instance of form object.
+     *
+     * @param   {Object}  data
+     *
+     * @return  {Form}
+     */
+    static create(data = {}) {
+        return new Form(data);
+    }
+
+    /**
      * Assign data to current instance of form object.
      *
      * @param   {Object}  data
@@ -366,4 +377,12 @@ class Form {
     }
 }
 
-export default Form;
+export default {
+    install(app) {
+        app.prototype.$form = (data = {}, options = {}) => {
+            return Form.create()
+                .withData(data)
+                .withOptions(options);
+        };
+    },
+};
