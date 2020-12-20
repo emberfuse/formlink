@@ -1,85 +1,89 @@
 # Preflight JS
 
-Preflight JS is a Form Object class created in order to make working with forms and validation errors more convenient. This package is automatically installed when using the Preflight PHP Framework.
+Preflight JS is a Form Object class created to make working with forms and validation errors more convenient. This package is automatically installed when using the Preflight PHP Framework.
 
-Installing this package will allow you to create a new form object that will provide easy access to error messages, as well as conveniences such as resetting the form state on a successful form submission.
+Installing this package will add a new `form` method to Vue's global scope. The `form` method is used to create a new form object that will provide easy access to error messages, as well as conveniences such as resetting the form state on successful form submission.
 
 ## Install
 
-You can install Preflight JS using Node JS package manager.
+You can install Preflight JS using Node JS package manager. Just run the below command inside your project to install it.
 
 ```bash
-npm i @thavarshan/preflight-js
-```
-
-Or add it directly to your `package.json` file:
-
-```json
-"dependencies": {
-  "preflight-js": "1.3.1"
-}
+npm install @thavarshan/preflight-js
 ```
 
 ## Usage
 
-Preflight uses **axios** to make requests to the backend server. A form may be submitted using the `post`, `put`, or `delete` methods. All of the data specified during the form's creation will be automatically included in the request. In addition, Basic request options may also be specified:
+Preflight uses **axios** to make requests to the backend server. A form may be submitted using the `post`, `put`, or `delete` methods. All of the data specified during the form's creation will be automatically included in the request. In addition, request headers may also be specified:
 
 ```javascript
-const form = new Form({
-    name: null,
-    email: null,
-});
+data() {
+    return {
+        form: this.$form({
+            name: this.name,
+            email: this.email,
+        }, {
+            resetOnSuccess: true,
+        }),
+    }
+},
 
-form.post('/user/profile');
+methods: {
+    updateProfile() {
+        this.form.post('/user/profile', {
+            Authorizations: `Bearer ${token}`;
+        });
+    }
+}
 ```
 
 Form error messages may be accessed using the `form.error` method. This method will return the first available error message for the given field:
 
 ```html
-<span v-text="form.error('email')"></span>
+<span v-show="form.hasError('email')" v-text="form.error('email')"></span>
 ```
 
-A flattened list of all validation errors may be accessed using the errors method. This method may prove useful when attempting to display the error message in a simple list:
-
-```html
-<li v-for="error in form.errors()">
-    {{ error }}
-</li>
-```
-
-Additional information about the form's current state is available via the `recentlySuccessful` and `processing` methods. These methods are helpful for dictating disabled or "in progress" UI states:
+Additional information about the form's current state is available via the recentlySuccessful and processing methods. These methods help dictate disabled or "in progress" UI states:
 
 ```html
 <span :on="form.recentlySuccessful">Saved.</span>
 
-<button :class="{ 'loading': form.processing }" :disabled="form.processing">Save</button>
+<button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Save</button>
 ```
 
-Preflight JS is best used inside a JavaScript framework. Shown below is an example of how to use it inside Vue JS.
+To use Preflight JS inside your Vue JS project, import the module and register it as a Vue plugin, as shown below.
 
 ```javascript
-import Form from 'preflight-js';
+import Vue from 'vue';
+import Form from '@thavarshan/preflight-js';
 
+Vue.use(Form);
+```
+
+You will then be able to use Preflight within your Vue components, as shown below.
+
+```javascript
 export default {
     data() {
-        form: new Form({
-            email: null,
-            password: null,
-            remember: true
-        }),
+        return {
+            form: this.$form({
+                email: null,
+                password: null,
+                remember: true,
+            }),
+        };
     },
 
     methods: {
         async login() {
-            await this.form.post('/login')
-                .then(response => {
-                    if (! this.form.hasErrors()) {
-                        window.location = '/home';
-                    }
-                });
-        }
-    }
-}
+            await this.form.post('/login').then(response => {
+                if (!this.form.hasErrors()) {
+                    window.location = '/home';
+                }
+            });
+        },
+    },
+};
 ```
 
 HTML template part of the Vue JS script shown above.
@@ -116,27 +120,28 @@ HTML template part of the Vue JS script shown above.
 </template>
 ```
 
-### Uploading files via POST, PUT or PATCH request
+### Uploading files via POST, PUT, or PATCH request
 
-To upload files via form object please specify which method is to be used via form object data and use POST request to make the actual request. An example is shown below.
+To upload files via form object please specify which method is to be used via form object data and use a POST request to make the actual request. An example is shown below.
 
 ```javascript
-import Form from 'preflight-js';
-
 export default {
     data() {
-        form: new Form(
-            {
-                _method: 'PUT',
-                name: null,
-                email: null,
-                photo: null,
-            },
-            {
-                resetOnSuccess: false,
-            }
-        );
+        return {
+            form: this.$form(
+                {
+                    _method: 'PUT',
+                    name: null,
+                    email: null,
+                    photo: null,
+                },
+                {
+                    resetOnSuccess: false,
+                }
+            ),
+        };
     },
+
     methods: {
         async updateProfile() {
             if (this.$refs.photo) {
@@ -151,7 +156,7 @@ export default {
 
 ### API & Available Methods
 
-Given below is a list of all available methods that can be used on your application front.
+Given below is a list of all available methods that are available for use on your application front.
 
 ```javascript
 /**
@@ -243,27 +248,34 @@ error(field);
 reset();
 ```
 
-### Options For Form Object Data
-
-Options for Form class can be set through the second optional argument passed to the newly created Form class.
-
-```javascript
-const data = {};
-const options = {};
-
-const form = new Form(data, options);
-```
-
-### Default Options Already Available
-
-`resetOnSuccess`: (Boolean) reset all errors and currently bound form data to null. Currently set data will be saved to `initials` object.
-
-`setInitialOnSuccess`: (Boolean) reset all errors and currently bound form data to null. Currently set data will be saved to `initials` object.
+Preflight form object class comes with two default options `resetOnSuccess` which resets all errors and currently bound form data to null. Currently set data will be saved to the `initials` object. And `setInitialOnSuccess` which saves previously set data to the `initials` object.
 
 **Custom options can be set via argument.**
+Custom options can be set via the second argument passed to the `form` method.
 
 ```javascript
-const options = {
-    customOption = 'customValue'
+data() {
+    return {
+        form: this.$form({
+            name: null,
+            email: null
+        }, {
+            customOption: 'customValue,
+        })
+    }
 }
 ```
+
+## Contributing
+
+Please read [CONTRIBUTING.md](https://github.com/Thavarshan/preflight-js/blob/main/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+
+## Authors
+
+-   **Thavarshan Thayananthajothy** - _Initial work_ - [Thavarshan](https://github.com/Thavarshan)
+
+See also the list of [contributors](https://github.com/Thavarshan/preflight-js/contributors) who participated in this project.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/Thavarshan/preflight-js/blob/main/LICENSE) file for details
