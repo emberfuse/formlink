@@ -130,7 +130,7 @@ export default {
         return {
             form: this.$form(
                 {
-                    _method: 'PUT',
+                    '_method': 'PUT',
                     name: null,
                     email: null,
                     photo: null,
