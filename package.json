@@ -1,6 +1,6 @@
 {
     "name": "@thavarshan/preflight-js",
-    "version": "1.6.4",
+    "version": "1.6.5",
     "description": "Simple form helpers for Vue JS.",
     "main": "dist/index.js",
     "jsnext:main": "src/index.js",
