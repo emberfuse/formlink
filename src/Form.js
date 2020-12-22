@@ -139,8 +139,6 @@ class Form {
     reset() {
         merge(this, this.initial);
 
-        this.errors.clearAll();
-
         for (let key in this.data) this.data[key] = null;
 
         this.isDirty = false;
