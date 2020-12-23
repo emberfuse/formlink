@@ -1,15 +1,15 @@
-# Preflight JS
+# Formlink
 
-Preflight JS is a Form Object class created to make working with forms and validation errors more convenient. This package is automatically installed when using the Preflight PHP Framework.
+Formlink is a Form Object class created to make working with forms and validation errors more convenient. This package is automatically installed when using the Preflight PHP Framework.
 
 Installing this package will add a new `form` method to Vue's global scope. The `form` method is used to create a new form object that will provide easy access to error messages, as well as conveniences such as resetting the form state on successful form submission.
 
 ## Install
 
-You can install Preflight JS using Node JS package manager. Just run the below command inside your project to install it.
+You can install Formlink using Node JS package manager. Just run the below command inside your project to install it.
 
 ```bash
-npm install @thavarshan/preflight-js
+npm install formlink
 ```
 
 ## Usage
@@ -53,11 +53,11 @@ Additional information about the form's current state is available via the `rece
 <button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Save</button>
 ```
 
-To use Preflight JS inside your Vue JS project, import the module and register it as a Vue plugin, as shown below.
+To use Formlink inside your Vue JS project, import the module and register it as a Vue plugin, as shown below.
 
 ```javascript
 import Vue from 'vue';
-import Form from '@thavarshan/preflight-js';
+import Form from 'formlink';
 
 Vue.use(Form);
 ```
@@ -155,7 +155,7 @@ export default {
 
 ### API & Available Methods
 
-Preflight JS has a number of methods that are available for use on your application front.
+Formlink has a number of methods that are available for use on your application front.
 
 ```javascript
 /**

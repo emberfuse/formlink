@@ -1,6 +1,6 @@
 {
-    "name": "@thavarshan/preflight-js",
-    "version": "1.6.5",
+    "name": "formlink",
+    "version": "1.0.1",
     "description": "Simple form helpers for Vue JS.",
     "main": "dist/index.js",
     "jsnext:main": "src/index.js",
@@ -11,19 +11,20 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/Thavarshan/preflight-js.git"
+        "url": "git+https://github.com/Thavarshan/formlink.git"
     },
     "keywords": [
-        "preflight",
         "vue",
-        "form"
+        "form",
+        "helpers",
+        "utilities"
     ],
     "author": "Thavarshan Thayananthajothy",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/Thavarshan/preflight-js/issues"
+        "url": "https://github.com/Thavarshan/formlink/issues"
     },
-    "homepage": "https://github.com/Thavarshan/preflight-js#readme",
+    "homepage": "https://github.com/Thavarshan/formlink#readme",
     "devDependencies": {
         "babel-cli": "^6.9.0",
         "babel-plugin-transform-async-to-generator": "^6.16.0",
