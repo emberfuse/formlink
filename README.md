@@ -25,13 +25,15 @@ data() {
         }, {
             resetOnSuccess: true,
         }),
+
+        token: 'my-api-token'
     }
 },
 
 methods: {
     updateProfile() {
         this.form.post('/user/profile', {
-            Authorizations: `Bearer ${token}`;
+            Authorizations: `Bearer ${this.token}`;
         });
     }
 }
@@ -43,7 +45,7 @@ Form error messages may be accessed using the `form.error` method. This method w
 <span v-show="form.hasError('email')" v-text="form.error('email')"></span>
 ```
 
-Additional information about the form's current state is available via the recentlySuccessful and processing methods. These methods help dictate disabled or "in progress" UI states:
+Additional information about the form's current state is available via the `recentlySuccessful` and `processing` methods. These methods help dictate "disabled" or "in progress" UI states:
 
 ```html
 <span :on="form.recentlySuccessful">Saved.</span>
@@ -60,7 +62,7 @@ import Form from '@thavarshan/preflight-js';
 Vue.use(Form);
 ```
 
-You will then be able to use Preflight within your Vue components, as shown below.
+You will then be able to use Preflight within your Vue components:
 
 ```javascript
 export default {
@@ -77,7 +79,7 @@ export default {
     methods: {
         async login() {
             await this.form.post('/login').then(response => {
-                if (!this.form.hasErrors()) {
+                if (! this.form.hasErrors()) {
                     window.location = '/home';
                 }
             });
@@ -122,23 +124,20 @@ HTML template part of the Vue JS script shown above.
 
 ### Uploading files via POST, PUT, or PATCH request
 
-To upload files via form object please specify which method is to be used via form object data and use a POST request to make the actual request. An example is shown below.
+To upload files via form object please specify which method is to be used via form object data and use a `POST` request to make the actual request:
 
 ```javascript
 export default {
     data() {
         return {
-            form: this.$form(
-                {
-                    '_method': 'PUT',
-                    name: null,
-                    email: null,
-                    photo: null,
-                },
-                {
-                    resetOnSuccess: false,
-                }
-            ),
+            form: this.$form({
+                '_method': 'PUT',
+                name: null,
+                email: null,
+                photo: null,
+            }, {
+                resetOnSuccess: false,
+            }),
         };
     },
 
@@ -148,7 +147,7 @@ export default {
                 this.form.photo = this.$refs.photo.files[0];
             }
 
-            await this.form.post(route('profile.update'));
+            await this.form.post('/user/profile');
         },
     },
 };
@@ -156,7 +155,7 @@ export default {
 
 ### API & Available Methods
 
-Given below is a list of all available methods that are available for use on your application front.
+Preflight JS has a number of methods that are available for use on your application front.
 
 ```javascript
 /**
@@ -249,22 +248,6 @@ reset();
 ```
 
 Preflight form object class comes with two default options `resetOnSuccess` which resets all errors and currently bound form data to null. Currently set data will be saved to the `initials` object. And `setInitialOnSuccess` which saves previously set data to the `initials` object.
-
-**Custom options can be set via argument.**
-Custom options can be set via the second argument passed to the `form` method.
-
-```javascript
-data() {
-    return {
-        form: this.$form({
-            name: null,
-            email: null
-        }, {
-            customOption: 'customValue,
-        })
-    }
-}
-```
 
 ## Contributing
 
