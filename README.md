@@ -124,7 +124,7 @@ HTML template part of the Vue JS script shown above.
 
 ### Uploading files via POST, PUT, or PATCH request
 
-To upload files via form object please specify which method is to be used via form object data and use a `POST` request to make the actual request:
+To upload files via Form Object please specify which method is to be used via Form Object data and use a `POST` request to make the actual request:
 
 ```javascript
 export default {
