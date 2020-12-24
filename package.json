@@ -1,6 +1,6 @@
 {
     "name": "formlink",
-    "version": "1.0.2",
+    "version": "1.2.1",
     "description": "Simple form helpers for Vue JS.",
     "main": "dist/index.js",
     "jsnext:main": "src/index.js",

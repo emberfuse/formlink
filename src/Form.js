@@ -13,9 +13,7 @@ class Form {
      * @return  {Proxy}
      */
     constructor(data = {}, options = {}) {
-        this.processing = false;
-        this.successful = false;
-        this.recentlySuccessful = false;
+        this.resetStatus();
         this.isDirty = false;
 
         this.withData(data).withOptions(options);
@@ -322,11 +320,22 @@ class Form {
         const errors = error.response.data.errors;
 
         if (error !== null && errors === undefined) {
+            this.resetStatus();
+
             throw error;
         }
 
         this.errors.record(errors);
 
+        this.resetStatus();
+    }
+
+    /**
+     * Reset status properties.
+     *
+     * @return  {void}
+     */
+    resetStatus() {
         this.processing = false;
         this.successful = false;
         this.recentlySuccessful = false;
