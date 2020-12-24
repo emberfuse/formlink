@@ -319,7 +319,13 @@ class Form {
      * @return  {void}
      */
     onFail(error) {
-        this.errors.record(error.response.data.errors);
+        const errors = error.response.data.errors;
+
+        if (error !== null && errors === undefined) {
+            throw error;
+        }
+
+        this.errors.record(errors);
 
         this.processing = false;
         this.successful = false;

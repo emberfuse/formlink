@@ -59,6 +59,10 @@ class Errors {
      * @return {Boolean}
      */
     any() {
+        if (this.errors === undefined) {
+            return true;
+        }
+
         return Boolean(Object.keys(this.errors).length > 0);
     }
 }
