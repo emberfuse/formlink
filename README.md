@@ -57,10 +57,10 @@ To receive error messages for each input field, error messages should be set on 
 
 ```json
 {
-    data: {
-        errors: {
-            email: "The email you provided already exists.",
-            name: "The name field is required"
+    "data": {
+        "errors": {
+            "email": "The email you provided already exists.",
+            "name": "The name field is required"
         }
     }
 }
