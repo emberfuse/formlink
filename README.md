@@ -53,7 +53,7 @@ onFail(error) {
 }
 ```
 
-To receive error messages for each input field, error messages should be set on the backend of your application. The error response body should be in the same format as shown.
+To receive error messages for each input field, error messages should be set on the backend of your application. The error response body should be properly structured for each input field and encased within `data.errors` object:
 
 ```json
 {
