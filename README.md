@@ -1,6 +1,6 @@
 # Formlink
 
-Formlink is a Form Object class created to make working with forms and validation errors more convenient. This package is automatically installed when using the Preflight PHP Framework.
+Formlink is a Form Object class created to make working with forms and validation errors more convenient. This package is automatically installed when using the Formlink PHP Framework.
 
 Installing this package will add a new `form` method to Vue's global scope. The `form` method is used to create a new form object that will provide easy access to error messages, as well as conveniences such as resetting the form state on successful form submission.
 
@@ -9,12 +9,12 @@ Installing this package will add a new `form` method to Vue's global scope. The 
 You can install Formlink using Node JS package manager. Just run the below command inside your project to install it.
 
 ```bash
-npm install formlink
+npm install formlink --save
 ```
 
 ## Usage
 
-Preflight uses **axios** to make requests to the backend server. A form may be submitted using the `post`, `put`, or `delete` methods. All of the data specified during the form's creation will be automatically included in the request. In addition, request headers may also be specified:
+Formlink uses **axios** to make requests to the backend server. A form may be submitted using the `post`, `put`, or `delete` methods. All of the data specified during the form's creation will be automatically included in the request. In addition, request headers may also be specified:
 
 ```javascript
 data() {
@@ -45,6 +45,27 @@ Form error messages may be accessed using the `form.error` method. This method w
 <span v-show="form.hasError('email')" v-text="form.error('email')"></span>
 ```
 
+By default Formlink "records" the error messages of each input field from the response recieved from the application backend through the `onFail` method:
+
+```javascript
+onFail(error) {
+    this.errors.record(error.response.data.errors);
+}
+```
+
+To receive error messages for each input field, error messages should be set on the backend of your application. The error response body should be in the same format as shown.
+
+```json
+{
+    data: {
+        errors: {
+            email: "The email you provided already exists.",
+            name: "The name field is required"
+        }
+    }
+}
+```
+
 Additional information about the form's current state is available via the `recentlySuccessful` and `processing` methods. These methods help dictate "disabled" or "in progress" UI states:
 
 ```html
@@ -62,7 +83,7 @@ import Form from 'formlink';
 Vue.use(Form);
 ```
 
-You will then be able to use Preflight within your Vue components:
+You will then be able to use Formlink within your Vue components:
 
 ```javascript
 export default {
@@ -155,7 +176,7 @@ export default {
 
 ### API & Available Methods
 
-Formlink has a number of methods that are available for use on your application front.
+Formlink has several methods that are available for use on your application front.
 
 ```javascript
 /**
@@ -247,18 +268,18 @@ error(field);
 reset();
 ```
 
-Preflight form object class comes with two default options `resetOnSuccess` which resets all errors and currently bound form data to null. Currently set data will be saved to the `initials` object. And `setInitialOnSuccess` which saves previously set data to the `initials` object.
+Formlink form object class comes with two default options `resetOnSuccess` which resets all errors and currently bound form data to null. Currently set data will be saved to the `initials` object. And `setInitialOnSuccess` which saves previously set data to the `initials` object.
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://github.com/Thavarshan/preflight-js/blob/main/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [CONTRIBUTING.md](https://github.com/Thavarshan/Formlink-js/blob/main/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Authors
 
 -   **Thavarshan Thayananthajothy** - _Initial work_ - [Thavarshan](https://github.com/Thavarshan)
 
-See also the list of [contributors](https://github.com/Thavarshan/preflight-js/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/Thavarshan/Formlink-js/contributors) who participated in this project.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/Thavarshan/preflight-js/blob/main/LICENSE) file for details
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/Thavarshan/Formlink-js/blob/main/LICENSE) file for details
