@@ -1,6 +1,6 @@
 {
     "name": "formlink",
-    "version": "1.3.2",
+    "version": "1.3.3",
     "description": "Simple form helpers for Vue JS.",
     "main": "dist/index.js",
     "jsnext:main": "src/index.js",
@@ -35,7 +35,6 @@
         "babel-plugin-transform-object-rest-spread": "^6.16.0",
         "babel-preset-env": "^1.7.0",
         "babel-preset-es2015": "^6.24.1",
-        "fsevents": "^1.2.13",
         "jest": "^23.0.0"
     },
     "dependencies": {
