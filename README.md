@@ -85,7 +85,7 @@ Vue.use(Form);
 
 You will then be able to use Formlink within your Vue components:
 
-```vue
+```html
 <template>
     <form @submit.prevent="login">
         <div>
@@ -116,6 +116,7 @@ You will then be able to use Formlink within your Vue components:
     </form>
 </template>
 
+<script>
 export default {
     data() {
         return {
@@ -137,6 +138,7 @@ export default {
         },
     },
 };
+</script>
 ```
 
 ### Uploading files via POST, PUT, or PATCH request
