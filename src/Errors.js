@@ -1,3 +1,5 @@
+import { arrayWrap } from './util/arrays';
+
 class Errors {
     /**
      * Create new errors handler instance.
@@ -7,7 +9,7 @@ class Errors {
     }
 
     /**
-     * Get error message for given field.
+     * Get first error message for given field.
      *
      * @param  {String} field
      * @return {String}
@@ -19,13 +21,41 @@ class Errors {
     }
 
     /**
-     * Determine if the given field has.
+     * Get all the error messages for the given field.
+     *
+     * @param  {String} field
+     * @return {Array}
+     */
+    getAll(field) {
+        return arrayWrap(this.errors[field] || []);
+    }
+
+    /**
+     * Determine if the given field has an error.
      *
      * @param  {String}  field
      * @return {Boolean}
      */
     has(field) {
-        return Boolean(this.errors[field]);
+        return this.errors.hasOwnProperty(field);
+    }
+
+    /**
+     * Get all the errors in a flat array.
+     *
+     * @return {Array}
+     */
+    flatten() {
+        return Object.values(this.errors).reduce((a, b) => a.concat(b), []);
+    }
+
+    /**
+     * Get all the errors.
+     *
+     * @return {Object}
+     */
+    all() {
+        return this.errors;
     }
 
     /**
@@ -42,15 +72,12 @@ class Errors {
      *
      * @param  {String} field
      */
-    clear(field) {
-        delete this.errors[field];
-    }
-
-    /**
-     * Clear all error messages and reset instance.
-     */
-    clearAll() {
-        this.errors = {};
+    clear(field = null) {
+        if (field !== null) {
+            delete this.errors[field];
+        } else {
+            this.errors = {};
+        }
     }
 
     /**
@@ -59,11 +86,11 @@ class Errors {
      * @return {Boolean}
      */
     any() {
-        if (this.errors === undefined) {
+        if (this.errors === 'undefined') {
             return true;
         }
 
-        return Boolean(Object.keys(this.errors).length > 0);
+        return Object.keys(this.errors).length > 0;
     }
 }
 
