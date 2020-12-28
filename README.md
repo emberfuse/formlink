@@ -1,8 +1,8 @@
 # Formlink
 
-Formlink is a Form Object class created to make working with forms and validation errors more convenient. This package is automatically installed when using the Formlink PHP Framework.
+Formlink is a Form Object class created to make working with forms and validation errors more convenient. This package is automatically installed when using the Preflight PHP Framework.
 
-Installing this package will add a new `form` method to Vue's global scope. The `form` method is used to create a new form object that will provide easy access to error messages, as well as conveniences such as resetting the form state on successful form submission.
+Installing this package will add a new `form` method to Vue's global scope which can then be accessed through `Vue.$form()` method. The `form` method is used to create a new form object that will provide easy access to error messages, as well as conveniences such as resetting the form state on successful form submission.
 
 ## Install
 
@@ -45,15 +45,15 @@ Form error messages may be accessed using the `form.error` method. This method w
 <span v-show="form.hasError('email')" v-text="form.error('email')"></span>
 ```
 
-By default Formlink "records" the error messages of each input field from the response recieved from the application backend through the `onFail` method:
+A flattened list of all validation errors may be accessed using the errors method. This method may prove useful when attempting to display the error message in a simple list:
 
-```javascript
-onFail(error) {
-    this.errors.record(error.response.data.errors);
-}
+```html
+<li v-for="error in form.errors()">
+    {{ error }}
+</li>
 ```
 
-To receive error messages for each input field, error messages should be set on the backend of your application. The error response body should be properly structured for each input field and encased within `data.errors` object:
+By default Formlink "records" the error messages of each input field from the response recieved from the application backend through the `onFail` method. To receive error messages for each input field, error messages should be sent as response data from the backend of your application. Error response body should be properly structured for each input field and encased within `data.errors` object:
 
 ```json
 {
@@ -85,33 +85,7 @@ Vue.use(Form);
 
 You will then be able to use Formlink within your Vue components:
 
-```javascript
-export default {
-    data() {
-        return {
-            form: this.$form({
-                email: null,
-                password: null,
-                remember: true,
-            }),
-        };
-    },
-
-    methods: {
-        async login() {
-            await this.form.post('/login').then(response => {
-                if (! this.form.hasErrors()) {
-                    window.location = '/home';
-                }
-            });
-        },
-    },
-};
-```
-
-HTML template part of the Vue JS script:
-
-```html
+```vue
 <template>
     <form @submit.prevent="login">
         <div>
@@ -141,6 +115,28 @@ HTML template part of the Vue JS script:
         </div>
     </form>
 </template>
+
+export default {
+    data() {
+        return {
+            form: this.$form({
+                email: null,
+                password: null,
+                remember: true,
+            }),
+        };
+    },
+
+    methods: {
+        async login() {
+            await this.form.post('/login').then(response => {
+                if (! this.form.hasErrors()) {
+                    window.location = '/home';
+                }
+            });
+        },
+    },
+};
 ```
 
 ### Uploading files via POST, PUT, or PATCH request
@@ -259,6 +255,13 @@ hasError(field);
  * @return  {String}
  */
 error(field);
+
+/**
+ * Get all the errors associated with the form in a flat array.
+ *
+ * @return  {String}
+ */
+errors();
 
 /**
  * Save current data to initials object and empty current data registry.

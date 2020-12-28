@@ -88,24 +88,24 @@ describe('Form', () => {
     test('submit the form successfully', async () => {
         mockAdapter.onPost('/login').reply(200);
 
-        const form = new Form();
+        const customForm = new Form();
 
-        await form.post('/login');
+        await customForm.post('/login');
 
-        expect(form.processing).toBeFalsy();
-        expect(form.successful).toBeTruthy();
-        expect(form.hasErrors()).toBeFalsy();
+        expect(customForm.processing).toBeFalsy();
+        expect(customForm.successful).toBeTruthy();
+        expect(customForm.hasErrors()).toBeFalsy();
     });
 
     test('transform data object to FormData', async () => {
-        const userForm = new Form({
-            '__method': 'PUT',
+        const customForm = new Form({
+            __method: 'PUT',
             username: 'foo',
             password: 'bar',
             photo: null,
         });
 
-        userForm.photo = new File([new Uint8Array(10)], { type: 'image/png' });
+        customForm.photo = new File([new Uint8Array(10)], { type: 'image/png' });
 
         mockAdapter.onPut('/user/photo').reply((config) => {
             expect(config.data).toBeInstanceOf(FormData);
@@ -115,7 +115,7 @@ describe('Form', () => {
             return [200, {}];
         });
 
-        await userForm.post('/user/photo');
+        await customForm.post('/user/photo');
     });
 
     test('set errors from the server', async () => {
@@ -123,15 +123,15 @@ describe('Form', () => {
             username: ['Username is required'],
         });
 
-        const form = new Form({});
+        const customForm = new Form({});
 
         try {
-            await form.post('/login');
+            await customForm.post('/login');
         } catch (error) {}
 
-        expect(form.hasErrors()).toBeTruthy();
-        expect(form.processing).toBeFalsy();
-        expect(form.successful).toBeFalsy();
+        expect(customForm.hasErrors()).toBeTruthy();
+        expect(customForm.processing).toBeFalsy();
+        expect(customForm.successful).toBeFalsy();
     });
 
     test('extract the errors from the response object', () => {
@@ -153,5 +153,22 @@ describe('Form', () => {
 
         response = { data: { username: ['Username is required'] } };
         expect(form.extractErrors(response)).toEqual({ username: ['Username is required'] });
+    });
+
+    test('submit the form using custom axios instance', async () => {
+        mockAdapter.onPost('/login').reply(200);
+
+        const customAxios = axios;
+        const customForm = new Form({
+            axios: customAxios,
+        });
+
+        await customForm.post('/login');
+
+        expect(customForm.processing).toBeFalsy();
+        expect(customForm.successful).toBeTruthy();
+        expect(customForm.hasErrors()).toBeFalsy();
+        expect(customForm.axios).toBeDefined();
+        expect(customForm.axios).toEqual(customAxios);
     });
 });

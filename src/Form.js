@@ -237,7 +237,7 @@ class Form {
         const data = requestType === 'get' ? { param: this.data } : this.data();
 
         return new Promise((resolve, reject) => {
-            axios
+            (this.axios || axios)
                 .request({
                     url,
                     method: requestType,
