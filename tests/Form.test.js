@@ -2,7 +2,6 @@ import Form from '@/Form';
 import Errors from '@/Errors';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { serialize as objectToFormData } from 'object-to-formdata';
 
 let form;
 let mockAdapter;

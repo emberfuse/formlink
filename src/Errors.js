@@ -46,7 +46,7 @@ class Errors {
      * @return {Array}
      */
     flatten() {
-        return Object.values(this.errors).reduce((a, b) => a.concat(b), []);
+        return Object.values(this.errors).reduce((carry, element) => carry.concat(element), []);
     }
 
     /**

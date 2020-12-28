@@ -6,12 +6,13 @@ describe('util', () => {
         expect(arrayWrap(['foo'])).toEqual(['foo']);
         expect(arrayWrap({ foo: 'bar' })).toEqual([{ foo: 'bar' }]);
     });
-    test('deterine if given variable is of type array', () => {
+
+    test('determine if given variable is of type array', () => {
         const response = ['message'];
         expect(isArray(response)).toBeTruthy();
     });
 
-    test('deterine if given variable is a file', () => {
+    test('determine if given variable is a file', () => {
         const fileValue = new File([new Uint8Array(10)], { type: 'image/png' });
         expect(isFile(fileValue)).toBeTruthy();
     });

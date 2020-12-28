@@ -230,8 +230,6 @@ class Form {
      * @return  {Promise}
      */
     __makeRequest(url, requestType, config = {}) {
-        this.startProcessing();
-
         requestType = requestType.toLowerCase();
 
         const data = requestType === 'get' ? { param: this.data } : this.data();
@@ -370,6 +368,11 @@ class Form {
         return { ...response.data };
     }
 
+    /**
+     * Set status properties to indicate form submission in progress.
+     *
+     * @return  {void}
+     */
     startProcessing() {
         if (this.hasErrors()) {
             this.errors.clear();

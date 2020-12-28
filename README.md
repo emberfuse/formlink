@@ -48,9 +48,7 @@ Form error messages may be accessed using the `form.error` method. This method w
 A flattened list of all validation errors may be accessed using the errors method. This method may prove useful when attempting to display the error message in a simple list:
 
 ```html
-<li v-for="error in form.errors()">
-    {{ error }}
-</li>
+<li v-for="error in form.errors()">{{ error }}</li>
 ```
 
 By default Formlink "records" the error messages of each input field from the response recieved from the application backend through the `onFail` method. To receive error messages for each input field, error messages should be sent as response data from the backend of your application. Error response body should be properly structured for each input field and encased within `data.errors` object:
@@ -85,7 +83,7 @@ Vue.use(Form);
 
 You will then be able to use Formlink within your Vue components:
 
-```vue
+```html
 <template>
     <form @submit.prevent="login">
         <div>
@@ -116,27 +114,29 @@ You will then be able to use Formlink within your Vue components:
     </form>
 </template>
 
-export default {
-    data() {
-        return {
-            form: this.$form({
-                email: null,
-                password: null,
-                remember: true,
-            }),
-        };
-    },
-
-    methods: {
-        async login() {
-            await this.form.post('/login').then(response => {
-                if (! this.form.hasErrors()) {
-                    window.location = '/home';
-                }
-            });
+<script>
+    export default {
+        data() {
+            return {
+                form: this.$form({
+                    email: null,
+                    password: null,
+                    remember: true,
+                }),
+            };
         },
-    },
-};
+
+        methods: {
+            async login() {
+                await this.form.post('/login').then((response) => {
+                    if (!this.form.hasErrors()) {
+                        window.location = '/home';
+                    }
+                });
+            },
+        },
+    };
+</script>
 ```
 
 ### Uploading files via POST, PUT, or PATCH request
