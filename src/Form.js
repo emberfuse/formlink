@@ -243,7 +243,7 @@ class Form {
                     method: requestType,
                     data: this.hasFiles() ? objectToFormData(data) : data,
                     headers: {
-                        Accept: 'text/html, application/xhtml+xml, application/json',
+                        Accept: 'application/json',
                         'X-Requested-With': 'XMLHttpRequest',
                     },
                     ...config,
