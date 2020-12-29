@@ -105,10 +105,10 @@ export default {
     },
 
     methods: {
-        updateProfile() {
+        async updateProfile() {
             this.form.useAxios(this.customAxios);
 
-            this.form.post('/user/profile', {
+            await this.form.post('/user/profile', {
                 headers: { Authorization: `Bearer ${this.token}` }
             });
         }
@@ -157,17 +157,14 @@ To upload files via Form Object please specify which method is to be used via Fo
 export default {
     data() {
         return {
-            form: this.$form(
-                {
-                    _method: 'PUT',
-                    name: null,
-                    email: null,
-                    photo: null,
-                },
-                {
-                    resetOnSuccess: false,
-                }
-            ),
+            form: this.$form({
+                '_method': 'PUT',
+                name: null,
+                email: null,
+                photo: null,
+            },  {
+                resetOnSuccess: false,
+            }),
         };
     },
 
