@@ -14,64 +14,6 @@ npm install formlink --save
 
 ## Usage
 
-Formlink uses **axios** to make requests to the backend server. A form may be submitted using the `post`, `put`, or `delete` methods. All of the data specified during the form's creation will be automatically included in the request. In addition, request headers may also be specified:
-
-```javascript
-data() {
-    return {
-        form: this.$form({
-            name: this.name,
-            email: this.email,
-        }, {
-            resetOnSuccess: true,
-        }),
-
-        token: 'my-api-token'
-    }
-},
-
-methods: {
-    updateProfile() {
-        this.form.post('/user/profile', {
-            headers: { Authorization: `Bearer ${this.token}` }
-        });
-    }
-}
-```
-
-Form error messages may be accessed using the `form.error` method. This method will return the first available error message for the given field:
-
-```html
-<span v-show="form.hasError('email')" v-text="form.error('email')"></span>
-```
-
-A flattened list of all validation errors may be accessed using the errors method. This method may prove useful when attempting to display the error message in a simple list:
-
-```html
-<li v-for="error in form.errors()">{{ error }}</li>
-```
-
-By default Formlink "records" the error messages of each input field from the response recieved from the application backend through the `onFail` method. To receive error messages for each input field, error messages should be sent as response data from the backend of your application. Error response body should be properly structured for each input field and encased within `data.errors` object:
-
-```json
-{
-    "data": {
-        "errors": {
-            "email": "The email you provided already exists.",
-            "name": "The name field is required"
-        }
-    }
-}
-```
-
-Additional information about the form's current state is available via the `recentlySuccessful` and `processing` methods. These methods help dictate "disabled" or "in progress" UI states:
-
-```html
-<span :on="form.recentlySuccessful">Saved.</span>
-
-<button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Save</button>
-```
-
 To use Formlink inside your Vue JS project, import the module and register it as a Vue plugin, as shown below.
 
 ```javascript
@@ -81,7 +23,7 @@ import Form from 'formlink';
 Vue.use(Form);
 ```
 
-You will then be able to use Formlink within your Vue components:
+You will then be able to use Formlink within your Vue components using the `form` method:
 
 ```html
 <template>
@@ -137,6 +79,74 @@ You will then be able to use Formlink within your Vue components:
         },
     };
 </script>
+```
+
+Formlink uses **axios** to make requests to the backend server, hence custom **axios** instances can also be specified. A form may be submitted using the `post`, `put`, or `delete` methods. All of the data specified during the form's creation will be automatically included in the request. In addition, request headers may also be specified:
+
+```javascript
+import axios from 'axios';
+
+axios.defaults.withCredentials = true;
+
+export default {
+    data() {
+        return {
+            customAxios: axios,
+
+            form: this.$form({
+                name: this.name,
+                email: this.email,
+            }, {
+                resetOnSuccess: true,
+            }),
+
+            token: 'my-api-token'
+        }
+    },
+
+    methods: {
+        updateProfile() {
+            this.form.useAxios(this.customAxios);
+
+            this.form.post('/user/profile', {
+                headers: { Authorization: `Bearer ${this.token}` }
+            });
+        }
+    }
+}
+```
+
+Form error messages may be accessed using the `form.error` method. This method will return the first available error message for the given field:
+
+```html
+<span v-show="form.hasError('email')" v-text="form.error('email')"></span>
+```
+
+A flattened list of all validation errors may be accessed using the `errors` method. This method may prove useful when attempting to display the error message in a simple list:
+
+```html
+<li v-for="error in form.errors()">{{ error }}</li>
+```
+
+By default Formlink "records" the error messages of each input field from the response recieved from the application backend through the `onFail` method. To receive error messages for each input field, error messages should be sent as **response data** from the backend of your application. Error response body should be properly structured for each input field and encased within `data.errors` object:
+
+```json
+{
+    "data": {
+        "errors": {
+            "email": "The email you provided already exists.",
+            "name": "The name field is required"
+        }
+    }
+}
+```
+
+Additional information about the form's current state is available via the `recentlySuccessful` and `processing` methods. These methods help dictate "disabled" or "in progress" UI states:
+
+```html
+<span :on="form.recentlySuccessful">Saved.</span>
+
+<button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Save</button>
 ```
 
 ### Uploading files via POST, PUT, or PATCH request
@@ -265,6 +275,15 @@ error(field);
  * @return  {String}
  */
 errors();
+
+/**
+ * Set custom axios instance.
+ *
+ * @param   {Axios}  axios
+ *
+ * @return  {void}
+ */
+useAxios(axios);
 
 /**
  * Save current data to initials object and empty current data registry.
