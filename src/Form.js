@@ -122,9 +122,7 @@ class Form {
     data() {
         const data = {};
 
-        for (const property in this.initial) {
-            data[property] = this[property];
-        }
+        for (const property in this.initial) data[property] = this[property];
 
         return data;
     }
@@ -137,7 +135,11 @@ class Form {
     reset() {
         merge(this, this.initial);
 
-        for (const key in this.data) this.data[key] = null;
+        for (const property in this.initial) this[property] = null;
+
+        if (this.initial.hasOwnProperty('axios')) {
+            this.useAxios(this.initial.axios);
+        }
 
         this.isDirty = false;
     }
@@ -431,6 +433,17 @@ class Form {
      */
     errors() {
         return this.errors.flatten();
+    }
+
+    /**
+     * Set custom axios instance.
+     *
+     * @param   {Axios}  axios
+     *
+     * @return  {void}
+     */
+    useAxios(axios) {
+        this.axios = axios;
     }
 
     /**

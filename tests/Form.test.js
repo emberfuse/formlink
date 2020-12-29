@@ -158,16 +158,14 @@ describe('Form', () => {
         mockAdapter.onPost('/login').reply(200);
 
         const customAxios = axios;
-        const customForm = new Form({
-            axios: customAxios,
-        });
+        form.useAxios(customAxios);
 
-        await customForm.post('/login');
+        await form.post('/login');
 
-        expect(customForm.processing).toBeFalsy();
-        expect(customForm.successful).toBeTruthy();
-        expect(customForm.hasErrors()).toBeFalsy();
-        expect(customForm.axios).toBeDefined();
-        expect(customForm.axios).toEqual(customAxios);
+        expect(form.processing).toBeFalsy();
+        expect(form.successful).toBeTruthy();
+        expect(form.hasErrors()).toBeFalsy();
+        expect(form.axios).toBeDefined();
+        expect(form.axios).toEqual(customAxios);
     });
 });

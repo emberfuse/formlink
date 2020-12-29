@@ -33,7 +33,7 @@ data() {
 methods: {
     updateProfile() {
         this.form.post('/user/profile', {
-            Authorizations: `Bearer ${this.token}`;
+            headers: { Authorization: `Bearer ${this.token}` }
         });
     }
 }
@@ -147,14 +147,17 @@ To upload files via Form Object please specify which method is to be used via Fo
 export default {
     data() {
         return {
-            form: this.$form({
-                '_method': 'PUT',
-                name: null,
-                email: null,
-                photo: null,
-            }, {
-                resetOnSuccess: false,
-            }),
+            form: this.$form(
+                {
+                    _method: 'PUT',
+                    name: null,
+                    email: null,
+                    photo: null,
+                },
+                {
+                    resetOnSuccess: false,
+                }
+            ),
         };
     },
 
