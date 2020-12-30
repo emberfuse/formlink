@@ -98,7 +98,7 @@ describe('Form', () => {
 
     test('transform data object to FormData', async () => {
         const customForm = new Form({
-            __method: 'PUT',
+            '__method': 'PUT',
             username: 'foo',
             password: 'bar',
             photo: null,
