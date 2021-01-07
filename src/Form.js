@@ -332,7 +332,7 @@ class Form {
 
         if (!this.hasErrors()) {
             this.successful = true;
-            this.recentlySuccessful = true;s
+            this.recentlySuccessful = true;
 
             setTimeout(() => (this.recentlySuccessful = false), 2000);
         }
