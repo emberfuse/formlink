@@ -218,8 +218,27 @@ class Form {
         this.__validateRequestType(requestType);
 
         return this.__makeRequest(url, requestType, config)
-            .catch(this.onFail.bind(this))
-            .then(this.onSuccess.bind(this));
+            .then((response) => {
+                response = this.onSuccess(response);
+
+                if (config.onSuccess) {
+                    this.errors.clear();
+
+                    return config.onSuccess(response);
+                }
+            })
+            .catch((errors) => {
+                this.onFail(errors);
+
+                if (config.onFail) {
+                    return config.onFail(errors);
+                }
+            })
+            .finally(() => {
+                if (config.onFinish) {
+                    return config.onFinish();
+                }
+            });
     }
 
     /**
@@ -313,7 +332,7 @@ class Form {
 
         if (!this.hasErrors()) {
             this.successful = true;
-            this.recentlySuccessful = true;
+            this.recentlySuccessful = true;s
 
             setTimeout(() => (this.recentlySuccessful = false), 2000);
         }

@@ -168,4 +168,40 @@ describe('Form', () => {
         expect(form.axios).toBeDefined();
         expect(form.axios).toEqual(customAxios);
     });
+
+    test('can define custom on success action', async () => {
+        mockAdapter.onPost('/login').reply(200);
+        let result = '';
+        await form.post('/login', {
+            onSuccess: (response) => result = 'Foo'
+        });
+
+        expect(form.processing).toBeFalsy();
+        expect(form.successful).toBeTruthy();
+        expect(result).toEqual('Foo');
+    });
+
+    test('can define custom on fail action', async () => {
+        mockAdapter.onPost('/login').reply(422);
+        let status = null;
+        await form.post('/login', {
+            onFail: (errors) => status = errors.response.status
+        });
+
+        expect(form.processing).toBeFalsy();
+        expect(form.successful).toBeFalsy();
+        expect(status).toEqual(422);
+    });
+
+    test('can define custom on finish action', async () => {
+        mockAdapter.onPost('/login').reply(422);
+        let status = '';
+        await form.post('/login', {
+            onFinish: () => status = 'Finished'
+        });
+
+        expect(form.processing).toBeFalsy();
+        expect(form.successful).toBeFalsy();
+        expect(status).toEqual('Finished');
+    });
 });

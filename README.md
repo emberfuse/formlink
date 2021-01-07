@@ -69,11 +69,9 @@ You will then be able to use Formlink within your Vue components using the `form
         },
 
         methods: {
-            async login() {
-                await this.form.post('/login').then((response) => {
-                    if (!this.form.hasErrors()) {
-                        window.location = '/home';
-                    }
+            login() {
+                this.form.post('/login', {
+                    onSuccess: response => window.location = response.data.path || '/home';
                 });
             },
         },
@@ -100,20 +98,20 @@ export default {
                 resetOnSuccess: true,
             }),
 
-            token: 'my-api-token'
-        }
+            token: 'my-api-token',
+        };
     },
 
     methods: {
-        async updateProfile() {
+        updateProfile() {
             this.form.useAxios(this.customAxios);
 
-            await this.form.post('/user/profile', {
-                headers: { Authorization: `Bearer ${this.token}` }
+            this.form.post('/user/profile', {
+                headers: { Authorization: `Bearer ${this.token}` },
             });
-        }
-    }
-}
+        },
+    },
+};
 ```
 
 Form error messages may be accessed using the `form.error` method. This method will return the first available error message for the given field:
@@ -158,23 +156,23 @@ export default {
     data() {
         return {
             form: this.$form({
-                '_method': 'PUT',
+                _method: 'PUT',
                 name: null,
                 email: null,
                 photo: null,
-            },  {
+            }, {
                 resetOnSuccess: false,
             }),
         };
     },
 
     methods: {
-        async updateProfile() {
+        updateProfile() {
             if (this.$refs.photo) {
                 this.form.photo = this.$refs.photo.files[0];
             }
 
-            await this.form.post('/user/profile');
+            this.form.post('/user/profile');
         },
     },
 };
