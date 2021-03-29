@@ -9,7 +9,7 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 
 [{package.json,*.scss,*.css}]
-indent_size = 2
+indent_size = 4
 
 [*.md]
 trim_trailing_whitespace = false

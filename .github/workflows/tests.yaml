@@ -21,9 +21,3 @@ jobs:
         run: npm install
       - name: Run tests
         run: npm run prepublish && npm test
-      - name: Upload artifacts
-        uses: actions/upload-artifact@master
-        if: failure()
-        with:
-            name: Logs
-            path: ./storage/logs
