@@ -1,7 +1,5 @@
 # Formlink
 
-![npm](https://img.shields.io/npm/dw/formlink) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Thavarshan/formlink/ Tests) ![npm](https://img.shields.io/npm/v/formlink)
-
 Formlink is a Form Object class created to make working with forms and validation errors more convenient.
 
 Installing this package will add a new `form` method to Vue's global scope which can then be accessed through `Vue.$form()` method. The `form` method is used to create a new form object that will provide easy access to error messages, as well as conveniences such as resetting the form state on successful form submission.
