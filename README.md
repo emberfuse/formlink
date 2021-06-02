@@ -1,29 +1,20 @@
 # Formlink
 
-Formlink is a Form Object class created to make working with forms and validation errors more convenient.
+Formlink is a Form Object class created to make working with Laravel forms and validation errors more convenient. Please be aware that although Formlink is a stand-alone package and not a plugin, it is best used with a fron-end framework like `VueJS` or `React`.
 
-Installing this package will add a new `form` method to Vue's global scope which can then be accessed through `Vue.$form()` method. The `form` method is used to create a new form object that will provide easy access to error messages, as well as conveniences such as resetting the form state on successful form submission.
+Formlink is used to create a new form object that will provide easy access to error messages, as well as conveniences such as resetting the form state on successful form submission.
 
 ## Install
 
-You can install Formlink using Node JS package manager. Just run the below command inside your project to install it.
+You can install Formlink using the Node JS package manager. Just run the below command inside your project to install it.
 
 ```bash
-npm install formlink --save
+npm install @emberfuse/formlink --save
 ```
 
 ## Usage
 
-To use Formlink inside your Vue JS project, import the module and register it as a Vue plugin, as shown below.
-
-```javascript
-import Vue from 'vue';
-import Form from 'formlink';
-
-Vue.use(Form);
-```
-
-You will then be able to use Formlink within your Vue components using the `form` method:
+To use Formlink inside your project, import the module within your template script tags:
 
 ```html
 <template>
@@ -57,25 +48,27 @@ You will then be able to use Formlink within your Vue components using the `form
 </template>
 
 <script>
-    export default {
-        data() {
-            return {
-                form: this.$form({
-                    email: null,
-                    password: null,
-                    remember: true,
-                }),
-            };
-        },
+import Form from '@emberfuse/formlink';
 
-        methods: {
-            login() {
-                this.form.post('/login', {
-                    onSuccess: response => window.location = response.data.path || '/home';
-                });
-            },
+export default {
+    data() {
+        return {
+            form: new Form({
+                email: null,
+                password: null,
+                remember: true,
+            }),
+        };
+    },
+
+    methods: {
+        login() {
+            this.form.post('/login', {
+                onSuccess: response => window.location = response.data.path || '/home';
+            });
         },
-    };
+    },
+};
 </script>
 ```
 
@@ -83,6 +76,7 @@ Formlink uses **axios** to make requests to the backend server, hence custom **a
 
 ```javascript
 import axios from 'axios';
+import Form from '@emberfuse/formlink';
 
 axios.defaults.withCredentials = true;
 
@@ -91,7 +85,7 @@ export default {
         return {
             customAxios: axios,
 
-            form: this.$form({
+            form: new Form({
                 name: this.name,
                 email: this.email,
             }, {
@@ -126,7 +120,7 @@ A flattened list of all validation errors may be accessed using the `errors` met
 <li v-for="error in form.errors()">{{ error }}</li>
 ```
 
-By default Formlink "records" the error messages of each input field from the response recieved from the application backend through the `onFail` method. To receive error messages for each input field, error messages should be sent as **response data** from the backend of your application. Error response body should be properly structured for each input field and encased within `data.errors` object:
+By default Formlink "records" the error messages of each input field from the response received from the application backend through the `onFail` method. To receive error messages for each input field, error messages should be sent as **response data** from the backend of your application. Error response body should be properly structured for each input field and encased within `data.errors` object:
 
 ```json
 {
@@ -155,7 +149,7 @@ To upload files via Form Object please specify which method is to be used via Fo
 export default {
     data() {
         return {
-            form: this.$form({
+            form: new Form({
                 _method: 'PUT',
                 name: null,
                 email: null,
@@ -184,14 +178,14 @@ Formlink has several methods that are available for use on your application fron
 
 ```javascript
 /**
- * Get all data as object assgined to form object.
+ * Get all data as object assigned to form object.
  *
  * @return  {Object}
  */
 withData(data);
 
 /**
- * Assign options to be used by current instance of form object.
+ * Assign options to be used by the current instance of the form object.
  *
  * @param   {Object}  options
  *
@@ -200,7 +194,7 @@ withData(data);
 withOptions(options);
 
 /**
- * Make POST request with currently attached data object to given endpoint.
+ * Make POST request with the currently attached data object to the given endpoint.
  *
  * @param   {String}  url
  * @param   {Object}  headers
@@ -210,7 +204,7 @@ withOptions(options);
 post(url, headers);
 
 /**
- * Make PUT request with currently attached data object to given endpoint.
+ * Make PUT request with the currently attached data object to the given endpoint.
  *
  * @param   {String}  url
  * @param   {Object}  headers
@@ -220,7 +214,7 @@ post(url, headers);
 put(url, headers);
 
 /**
- * Make PATCH request with currently attached data object to given endpoint.
+ * Make PATCH request with the currently attached data object to the given endpoint.
  *
  * @param   {String}  url
  * @param   {Object}  headers
@@ -230,7 +224,7 @@ put(url, headers);
 patch(url, headers);
 
 /**
- * Make DELETE request with currently attached data object to given endpoint.
+ * Make DELETE request with the currently attached data object to the given endpoint.
  *
  * @param   {String}  url
  * @param   {Object}  headers
@@ -292,13 +286,13 @@ Formlink form object class comes with two default options `resetOnSuccess` which
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://github.com/Thavarshan/formlink/blob/main/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [CONTRIBUTING.md](https://github.com/emberfuse/formlink/blob/main/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Authors
 
 -   **Thavarshan Thayananthajothy** - _Initial work_ - [Thavarshan](https://github.com/Thavarshan)
 
-See also the list of [contributors](https://github.com/Thavarshan/formlink/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/emberfuse/formlink/contributors) who participated in this project.
 
 ## License
 
