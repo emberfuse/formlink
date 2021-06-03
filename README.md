@@ -48,7 +48,7 @@ To use Formlink inside your project, import the module within your template scri
 </template>
 
 <script>
-import Form from '@emberfuse/formlink';
+import Form from 'formlink';
 
 export default {
     data() {
@@ -76,7 +76,7 @@ Formlink uses **axios** to make requests to the backend server, hence custom **a
 
 ```javascript
 import axios from 'axios';
-import Form from '@emberfuse/formlink';
+import Form from 'formlink';
 
 axios.defaults.withCredentials = true;
 
