@@ -1,7 +1,7 @@
 {
     "name": "formlink",
     "version": "1.0.0",
-    "description": "Simple form helpers for Vue JS.",
+    "description": "Simple JS form helpers for Laravel.",
     "main": "dist/index.js",
     "jsnext:main": "src/index.js",
     "scripts": {
