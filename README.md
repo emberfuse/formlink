@@ -9,7 +9,7 @@ Formlink is used to create a new form object that will provide easy access to er
 You can install Formlink using the Node JS package manager. Just run the below command inside your project to install it.
 
 ```bash
-npm install @emberfuse/formlink --save
+npm install formlink --save
 ```
 
 ## Usage

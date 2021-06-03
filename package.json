@@ -1,5 +1,5 @@
 {
-    "name": "@emberfuse/formlink",
+    "name": "formlink",
     "version": "1.0.0",
     "description": "Simple form helpers for Vue JS.",
     "main": "dist/index.js",
