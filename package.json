@@ -1,6 +1,6 @@
 {
     "name": "formlink",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "description": "Simple JS form helpers for Laravel.",
     "main": "dist/index.js",
     "jsnext:main": "src/index.js",
